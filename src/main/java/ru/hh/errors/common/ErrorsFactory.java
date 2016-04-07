@@ -18,7 +18,7 @@ public class ErrorsFactory {
   private ErrorsFactory() {
   }
 
-  static BiFunction<String, Integer, Object> error(Object key) {
+  private static BiFunction<String, Integer, Object> toEntityCreator(Object key) {
     return (s, i) -> new Errors(i, key, s);
   }
 
@@ -41,7 +41,7 @@ public class ErrorsFactory {
    *          key will be converted to string by {@link Object#toString()} method
    */
   public static WebApplicationException error(int code, Object errorKey, String description, Throwable cause) {
-    return new ErrorResponseBuilder(description).setStatus(code).setEntityCreator(error(errorKey)).setCause(cause).toException();
+    return new ErrorResponseBuilder(description).setStatus(code).setEntityCreator(toEntityCreator(errorKey)).setCause(cause).toException();
   }
 
   /**
@@ -77,7 +77,7 @@ public class ErrorsFactory {
    *          key will be converted to string by {@link Object#toString()} method
    */
   public static WebApplicationException error(int code, Object errorKey, String description) {
-    return new ErrorResponseBuilder(description).setStatus(code).setEntityCreator(error(errorKey)).toException();
+    return new ErrorResponseBuilder(description).setStatus(code).setEntityCreator(toEntityCreator(errorKey)).toException();
   }
 
   /**
