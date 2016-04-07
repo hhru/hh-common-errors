@@ -8,15 +8,15 @@ import javax.ws.rs.core.Response;
  */
 class CustomWebApplicationException extends WebApplicationException {
 
-  public CustomWebApplicationException(Throwable cause, Response response) {
+  CustomWebApplicationException(Throwable cause, Response response) {
     super(cause, response);
   }
 
-  public CustomWebApplicationException(Throwable cause) {
+  CustomWebApplicationException(Throwable cause) {
     super(cause);
   }
 
-  public CustomWebApplicationException(Response response) {
+  CustomWebApplicationException(Response response) {
     super(response);
   }
 
