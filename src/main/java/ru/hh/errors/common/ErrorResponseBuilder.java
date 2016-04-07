@@ -21,7 +21,7 @@ public class ErrorResponseBuilder {
    * Construct builder.
    *
    * @param message
-   *          non-null, used for setting {@link Throwable#getMessage()} as well as passing it for entity creator.
+   *          used for setting {@link Throwable#getMessage()} as well as passing it for entity creator. Can be null.
    */
   public ErrorResponseBuilder(String message) {
     this.message = message;
@@ -52,7 +52,7 @@ public class ErrorResponseBuilder {
    * Append additional info to current message.
    */
   public ErrorResponseBuilder appendToMessage(String addition) {
-    this.message += " " + addition;
+    this.message = this.message == null ? addition : this.message + " " + addition;
     return this;
   }
 
