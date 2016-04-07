@@ -3,7 +3,6 @@ package ru.hh.errors.common;
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
 import static javax.ws.rs.core.Response.Status.CONFLICT;
 import static javax.ws.rs.core.Response.Status.FORBIDDEN;
-import static javax.ws.rs.core.Response.Status.INTERNAL_SERVER_ERROR;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 import java.util.function.BiFunction;
 import javax.ws.rs.WebApplicationException;
@@ -22,12 +21,6 @@ public class ErrorsFactory {
     return (s, i) -> new Errors(i, key, s);
   }
 
-  /**
-   * Construct WAE with provided {@link Errors} container as response entity.
-   *
-   * @param errors
-   *          errors container
-   */
   public static WebApplicationException error(Errors errors) {
     return new ErrorResponseBuilder(null).setStatus(errors.code).setEntityCreator((s, i) -> errors).toException();
   }
@@ -159,25 +152,4 @@ public class ErrorsFactory {
   public static <T> T throwForbidden(Object errorKey, String description) throws WebApplicationException {
     throw errorForbidden(errorKey, description);
   }
-
-  /**
-   * Construct WAE with {@link Errors} as response entity and {@link Status#INTERNAL_SERVER_ERROR} as response status code.
-   *
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   */
-  public static WebApplicationException errorInternalServerError(Object errorKey, String description) {
-    return error(INTERNAL_SERVER_ERROR, errorKey, description, null);
-  }
-
-  /**
-   * Construct and throw WAE with {@link Errors} as response entity and {@link Status#INTERNAL_SERVER_ERROR} as response status code.
-   *
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   */
-  public static <T> T throwInternalServerError(Object errorKey, String description) throws WebApplicationException {
-    throw errorInternalServerError(errorKey, description);
-  }
-
 }
