@@ -20,13 +20,13 @@ The best way to use the library is through static methods of `ru.hh.errors.commo
 
 ```Java
 if (incomingArg == null) {
-  throw Errors.of(400, MyErrorsEnum.INCOMING_ARG_REQUIRED, "incomingArg must be specified").toException();
+  throw Errors.of(400, MyErrorsEnum.INCOMING_ARG_REQUIRED, "incomingArg must be specified").toWebApplicationException();
 }
 ```
 
 ```Java
 if (Mode.find(mode) == null) {
-  throw Errors.of(Status.NOT_IMPLEMENTED, "MODE_NOT_IMPLEMENTED", String.format("Mode %s is not implemented yet", mode)).toException();
+  throw Errors.of(Status.NOT_IMPLEMENTED, "MODE_NOT_IMPLEMENTED", String.format("Mode %s is not implemented yet", mode)).toWebApplicationException();
 }
 ```
 
@@ -42,7 +42,7 @@ if (arg2 == null) {
 }
 ...
 if (errors.hasErrors()) {
-  throw errors.toException();
+  throw errors.toWebApplicationException();
 }
 ```
 

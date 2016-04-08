@@ -1,5 +1,6 @@
 package ru.hh.errors.common;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -35,6 +36,9 @@ public class Errors {
    *          text description of error for debug purposes, can be null
    */
   public Errors add(Object errorKey, String description) {
+    if (this.errors == null) {
+      this.errors = new ArrayList<>();
+    }
     this.errors.add(new Error(errorKey, description));
     return this;
   }
@@ -46,7 +50,7 @@ public class Errors {
   /**
    * Construct WAE with this container as response entity.
    */
-  public WebApplicationException toException() {
+  public WebApplicationException toWebApplicationException() {
     return new WebApplicationException(Response.status(code).entity(this).build());
   }
 
