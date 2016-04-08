@@ -61,9 +61,7 @@ public class Errors {
    *          text description of error for debug purposes, can be null
    */
   public static Errors of(int statusCode, Object key, String description) {
-    Errors errors = new Errors();
-    errors.code = statusCode;
-    return errors.add(key, description);
+    return of(statusCode).add(key, description);
   }
 
   /**
