@@ -1,9 +1,8 @@
 package ru.hh.errors.common;
 
-import static java.util.Objects.requireNonNull;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
@@ -16,56 +15,6 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement(name = "errors")
 public class Errors {
-
-  /**
-   * Construct container with single error.
-   *
-   * @param code
-   *          actual HTTP status code
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   */
-  public Errors(int code, Object errorKey, String description) {
-    this(code);
-    add(errorKey, description);
-  }
-
-  /**
-   * Construct container with single error.
-   *
-   * @param statusCode
-   *          actual HTTP status code
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   */
-  public Errors(Status statusCode, Object errorKey, String description) {
-    this(requireNonNull(statusCode, "status must be not null").getStatusCode(), errorKey, description);
-  }
-
-  /**
-   * Construct empty container.
-   *
-   * @param code
-   *          actual HTTP status code
-   */
-  public Errors(int code) {
-    this.code = code;
-    this.errors = new ArrayList<>();
-  }
-
-  /**
-   * Construct empty container.
-   *
-   * @param code
-   *          actual HTTP status code
-   */
-  public Errors(Status statusCode) {
-    this(requireNonNull(statusCode, "status must be not null").getStatusCode());
-  }
 
   // default constructor for deserialization
   public Errors() {
@@ -98,7 +47,59 @@ public class Errors {
    * Construct WAE with this container as response entity.
    */
   public WebApplicationException toException() {
-    return ErrorsFactory.error(this);
+    return new WebApplicationException(Response.status(code).entity(this).build());
+  }
+
+  /**
+   * Construct container with single error.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   */
+  public static Errors of(int statusCode, Object key, String description) {
+    Errors errors = new Errors();
+    errors.code = statusCode;
+    return errors.add(key, description);
+  }
+
+  /**
+   * Construct container with single error.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   */
+  public static Errors of(Status statusCode, Object errorKey, String description) {
+    return of(statusCode.getStatusCode(), errorKey, description);
+  }
+
+  /**
+   * Construct empty container.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   */
+  public static Errors of(int statusCode) {
+    Errors errors = new Errors();
+    errors.code = statusCode;
+    return errors;
+  }
+
+  /**
+   * Construct empty container.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   */
+  public static Errors of(Status statusCode) {
+    return of(statusCode.getStatusCode());
   }
 
 }

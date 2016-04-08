@@ -16,28 +16,24 @@ Library expects JAX-RS on the class path in some form. Usually Jersey provides i
 
 ## Usage
 
-The best way to use the library is through static methods of `ru.hh.errors.common.ErrorsFactory` class. Consider the following examples:
+The best way to use the library is through static methods of `ru.hh.errors.common.Errors` class. Consider the following examples:
 
 ```Java
 if (incomingArg == null) {
-  throw ErrorsFactory.errorBadRequest("INCOMING_ARG_REQUIRED", "incomingArg must be specified");
+  throw Errors.of(400, MyErrorsEnum.INCOMING_ARG_REQUIRED, "incomingArg must be specified").toException();
 }
 ```
 
 ```Java
 if (Mode.find(mode) == null) {
-  throw ErrorsFactory.error(Status.NOT_IMPLEMENTED, "MODE_NOT_IMPLEMENTED", String.format("Mode %s is not implemented yet", mode));
+  throw Errors.of(Status.NOT_IMPLEMENTED, "MODE_NOT_IMPLEMENTED", String.format("Mode %s is not implemented yet", mode)).toException();
 }
-```
-
-```Java
-String name = form.getName() == null ? ErrorsFactory.throwBadRequest("NAME_REQUIRED", "Name must be specified") : form.getName();
 ```
 
 Sometimes multiple errors have to be accumulated:
 
 ```Java
-Errors errors = new Errors(Status.BAD_REQUEST);
+Errors errors = Errors.of(Status.BAD_REQUEST);
 if (arg1 == null) {
   errors.add("ARG1_REQUIRED", "arg1 must be specified");
 }
@@ -52,5 +48,5 @@ if (errors.hasErrors()) {
 
 ## Extending
 
-Existing DTOs should be enough for most cases, but sometimes additional fields must be present. In that case both DTOs must be extended. `ErrorsFactory` methods that accept existing `Errors` entity can still be used for custom DTOs.
+Existing DTOs should be enough for most cases, but sometimes additional fields must be present. In that case both DTOs must be extended.
 
