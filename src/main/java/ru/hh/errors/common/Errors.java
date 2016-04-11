@@ -1,12 +1,7 @@
 package ru.hh.errors.common;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -15,93 +10,43 @@ import javax.xml.bind.annotation.XmlRootElement;
  * Can be serialized to suitable format by converter that accepts JAXB annotations (i.e. Jackson for JSON).
  */
 @XmlRootElement(name = "errors")
-public class Errors {
+public class Errors extends AbstractErrors<Error> {
 
-  // default constructor for deserialization
   public Errors() {
+    super();
   }
 
-  @XmlAttribute
-  public int code;
-
-  @XmlElement(name = "error")
-  public List<Error> errors;
-
-  /**
-   * Add error to container.
-   *
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   */
-  public Errors add(Object errorKey, String description) {
-    if (this.errors == null) {
-      this.errors = new ArrayList<>();
-    }
-    this.errors.add(new Error(errorKey, description));
-    return this;
+  public Errors(int statusCode, Object key, String description) {
+    super(statusCode, key, description);
   }
 
-  public boolean hasErrors() {
-    return errors != null && !errors.isEmpty();
+  public Errors(int statusCode) {
+    super(statusCode);
   }
 
-  /**
-   * Construct WAE with this container as response entity.
-   */
-  public WebApplicationException toWebApplicationException() {
-    return new WebApplicationException(Response.status(code).entity(this).build());
+  public Errors(Status statusCode, Object errorKey, String description) {
+    super(statusCode, errorKey, description);
   }
 
-  /**
-   * Construct container with single error.
-   *
-   * @param statusCode
-   *          response HTTP status code
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   */
-  public static Errors of(int statusCode, Object key, String description) {
-    return of(statusCode).add(key, description);
+  public Errors(Status statusCode) {
+    super(statusCode);
   }
 
-  /**
-   * Construct container with single error.
-   *
-   * @param statusCode
-   *          response HTTP status code
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   */
-  public static Errors of(Status statusCode, Object errorKey, String description) {
-    return of(statusCode.getStatusCode(), errorKey, description);
+  // override for JAXB
+
+  @Override
+  public List<Error> getErrors() {
+    return super.getErrors();
   }
 
-  /**
-   * Construct empty container.
-   *
-   * @param statusCode
-   *          response HTTP status code
-   */
-  public static Errors of(int statusCode) {
-    Errors errors = new Errors();
-    errors.code = statusCode;
-    return errors;
+  @Override
+  public void setErrors(List<Error> errors) {
+    super.setErrors(errors);
   }
 
-  /**
-   * Construct empty container.
-   *
-   * @param statusCode
-   *          response HTTP status code
-   */
-  public static Errors of(Status statusCode) {
-    return of(statusCode.getStatusCode());
+  @Override
+  protected Error createError(Object errorKey, String description) {
+    return new Error(errorKey, description);
   }
 
 }
