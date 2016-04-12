@@ -50,3 +50,12 @@ if (errors.hasErrors()) {
 
 Existing DTOs should be enough for most cases, but sometimes additional fields must be present. In that case both DTOs must be extended.
 
+Extend `ru.hh.errors.common.Error` and add necessary fields.
+
+Extend `ru.hh.errors.common.AbstractErrors<T>`, specify type that extends Error as generic parameter. Override following methods:
+
+- getErrors / setErrors - this is requirement for JAXB to work properly
+
+- createError - creates custom Error instance
+
+- any necessary constructors
