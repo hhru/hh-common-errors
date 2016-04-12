@@ -20,20 +20,20 @@ The best way to use the library is through static methods of `ru.hh.errors.commo
 
 ```Java
 if (incomingArg == null) {
-  throw Errors.of(400, MyErrorsEnum.INCOMING_ARG_REQUIRED, "incomingArg must be specified").toWebApplicationException();
+  throw new Errors(400, MyErrorsEnum.INCOMING_ARG_REQUIRED, "incomingArg must be specified").toWebApplicationException();
 }
 ```
 
 ```Java
 if (Mode.find(mode) == null) {
-  throw Errors.of(Status.NOT_IMPLEMENTED, "MODE_NOT_IMPLEMENTED", String.format("Mode %s is not implemented yet", mode)).toWebApplicationException();
+  throw new Errors(Status.NOT_IMPLEMENTED, "MODE_NOT_IMPLEMENTED", String.format("Mode %s is not implemented yet", mode)).toWebApplicationException();
 }
 ```
 
 Sometimes multiple errors have to be accumulated:
 
 ```Java
-Errors errors = Errors.of(Status.BAD_REQUEST);
+Errors errors = new Errors(Status.BAD_REQUEST);
 if (arg1 == null) {
   errors.add("ARG1_REQUIRED", "arg1 must be specified");
 }
