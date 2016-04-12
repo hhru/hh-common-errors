@@ -4,7 +4,7 @@ import static java.util.Objects.requireNonNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
+@XmlRootElement(name = "error")
 public class Error {
 
   /**

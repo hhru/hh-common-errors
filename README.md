@@ -1,6 +1,18 @@
 # DTOs and factory code for errors in common format.
 
-JAXB-annotated DTOs provide common way of describing response errors.
+JAXB-annotated DTOs provide common way of describing response errors:
+
+```xml
+<errors status="404">
+  <error>
+    <key>VACANCY_NOT_FOUND</key>
+    <description>Vacancy id 15 is not found</description>
+  </error>
+</errors>
+```
+```json
+{"code":404,"errors":[{"key":"VACANCY_NOT_FOUND","description":"Vacancy id 15 is not found"}]}
+```
 
 ## Prerequisites
 
@@ -54,7 +66,7 @@ Extend `ru.hh.errors.common.Error` and add necessary fields.
 
 Extend `ru.hh.errors.common.AbstractErrors<T>`, specify type that extends Error as generic parameter. Override following methods:
 
-- getErrors / setErrors - this is requirement for JAXB to work properly
+- getErrors / setErrors - this is requirement for JAXB to work properly. Annotate getter with `@XmlElement(name = "error")`
 
 - createError - creates custom Error instance
 

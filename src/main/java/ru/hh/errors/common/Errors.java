@@ -2,6 +2,7 @@ package ru.hh.errors.common;
 
 import java.util.List;
 import javax.ws.rs.core.Response.Status;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -35,6 +36,7 @@ public class Errors extends AbstractErrors<Error> {
   // override for JAXB
 
   @Override
+  @XmlElement(name = "error")
   public List<Error> getErrors() {
     return super.getErrors();
   }

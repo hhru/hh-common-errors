@@ -8,7 +8,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -85,7 +84,6 @@ public abstract class AbstractErrors<T extends Error> {
     this.code = code;
   }
 
-  @XmlElement(name = "error")
   public List<T> getErrors() {
     return errors;
   }
