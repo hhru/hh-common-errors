@@ -12,7 +12,7 @@
     <packaging>jar</packaging>
 
     <name>common error DTOs</name>
-    <version>0.0.2</version>
+    <version>0.0.3-SNAPSHOT</version>
 
     <dependencies>
         <dependency>
@@ -57,6 +57,6 @@
     <scm>
         <connection>scm:git:git@github.com:hhru/hh-common-errors.git</connection>
         <developerConnection>scm:git:git@github.com:hhru/hh-common-errors.git</developerConnection>
-        <tag>errors-common-0.0.2</tag>
+        <tag>HEAD</tag>
     </scm>
 </project>
