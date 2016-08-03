@@ -126,7 +126,11 @@ public abstract class AbstractErrors<T extends Error> {
    * Construct WAE with this container as response entity.
    */
   public WebApplicationException toWebApplicationException() {
-    return new WebApplicationException(Response.status(code).entity(this).build());
+    return new WebApplicationException(toResponse());
+  }
+
+  public Response toResponse() {
+    return Response.status(code).entity(this).build();
   }
 
 }
