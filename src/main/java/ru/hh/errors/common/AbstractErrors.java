@@ -109,13 +109,13 @@ public abstract class AbstractErrors<T extends Error> {
    * @param description
    *          text description of error for debug purposes, can be null
    */
-  public T add(Object errorKey, String description) {
+  public AbstractErrors<T> add(Object errorKey, String description) {
     return add(createError(errorKey, description));
   }
 
-  public T add(T error) {
+  public AbstractErrors<T> add(T error) {
     errors().add(error);
-    return error;
+    return this;
   }
 
   public boolean hasErrors() {
