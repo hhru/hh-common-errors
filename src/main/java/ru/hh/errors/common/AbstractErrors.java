@@ -28,14 +28,16 @@ public abstract class AbstractErrors<T extends Error> {
    *
    * @param statusCode
    *          response HTTP status code
-   * @param errorKey
+   * @param key
    *          key will be converted to string by {@link Object#toString()} method
    * @param description
    *          text description of error for debug purposes, can be null
+   * @param location
+   *          location of the error, can be null
    */
-  public AbstractErrors(int statusCode, Object key, String description) {
+  public AbstractErrors(int statusCode, Object key, String description, String location) {
     this(statusCode);
-    add(key, description);
+    add(key, description, location);
   }
 
   /**
@@ -47,9 +49,11 @@ public abstract class AbstractErrors<T extends Error> {
    *          key will be converted to string by {@link Object#toString()} method
    * @param description
    *          text description of error for debug purposes, can be null
+   * @param location
+   *          location of the error, can be null
    */
-  public AbstractErrors(Status statusCode, Object errorKey, String description) {
-    this(statusCode.getStatusCode(), errorKey, description);
+  public AbstractErrors(Status statusCode, Object errorKey, String description, String location) {
+    this(statusCode.getStatusCode(), errorKey, description, location);
   }
 
   /**
@@ -92,7 +96,7 @@ public abstract class AbstractErrors<T extends Error> {
     this.errors = errors;
   }
 
-  protected abstract T createError(Object errorKey, String description);
+  protected abstract T createError(Object errorKey, String description, String location);
 
   private List<T> errors() {
     if (this.errors == null) {
@@ -108,9 +112,23 @@ public abstract class AbstractErrors<T extends Error> {
    *          key will be converted to string by {@link Object#toString()} method
    * @param description
    *          text description of error for debug purposes, can be null
+   * @param location
+   *          location of the error, can be null
+   */
+  public AbstractErrors<T> add(Object errorKey, String description, String location) {
+    return add(createError(errorKey, description, location));
+  }
+
+  /**
+   * Add error to container.
+   *
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
    */
   public AbstractErrors<T> add(Object errorKey, String description) {
-    return add(createError(errorKey, description));
+    return add(errorKey, description, null);
   }
 
   public AbstractErrors<T> add(T error) {
@@ -134,4 +152,3 @@ public abstract class AbstractErrors<T extends Error> {
   }
 
 }
-
