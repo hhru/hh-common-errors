@@ -1,5 +1,6 @@
 package ru.hh.errors.common;
 
+import java.util.Objects;
 import static java.util.Objects.requireNonNull;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -49,4 +50,33 @@ public class Error {
   @XmlElement
   public String location;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    Error other = (Error) o;
+
+    return Objects.equals(key, other.key) &&
+        Objects.equals(location, other.location);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(key, location);
+  }
+
+  @Override
+  public String toString() {
+    return "Error{" +
+        "key='" + key + '\'' +
+        ", description='" + description + '\'' +
+        ", location='" + location + '\'' +
+        '}';
+  }
 }
