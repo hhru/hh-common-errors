@@ -55,6 +55,10 @@ public class Errors extends AbstractErrors<Error> {
     super.setErrors(errors);
   }
 
+  public void setError(List<Error> errors) {
+    super.setErrors(errors);
+  }
+
   @Override
   protected Error createError(Object errorKey, String description, String location) {
     return new Error(errorKey, description, location);
