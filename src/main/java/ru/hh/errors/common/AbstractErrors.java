@@ -19,6 +19,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlAccessorType(XmlAccessType.PUBLIC_MEMBER)
 public abstract class AbstractErrors<T extends Error> {
 
+  protected int code;
+  protected List<T> errors;
+
   // default constructor for deserialization
   public AbstractErrors() {
   }
@@ -75,9 +78,6 @@ public abstract class AbstractErrors<T extends Error> {
   public AbstractErrors(Status statusCode) {
     this(statusCode.getStatusCode());
   }
-
-  protected int code;
-  protected List<T> errors;
 
   @XmlAttribute
   public int getCode() {
