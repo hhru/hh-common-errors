@@ -55,6 +55,17 @@ public class Errors extends AbstractErrors<Error> {
     super.setErrors(errors);
   }
 
+  @XmlElement(name = "errors")
+  @Deprecated // do not use this method: it is required only to serialize/deserialize 'errors' key
+  public List<Error> getError() {
+    return super.getErrors();
+  }
+
+  @Deprecated // do not use this method: it is required only to serialize/deserialize 'errors' key
+  public void setError(List<Error> errors) {
+    super.setErrors(errors);
+  }
+
   @Override
   protected Error createError(Object errorKey, String description, String location) {
     return new Error(errorKey, description, location);

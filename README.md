@@ -11,7 +11,7 @@ JAXB-annotated DTOs provide common way of describing response errors:
 </errors>
 ```
 ```json
-{"code":404,"error":[{"key":"VACANCY_NOT_FOUND","description":"Vacancy id 15 is not found"}]}
+{"code":404,"errors":[{"key":"VACANCY_NOT_FOUND","description":"Vacancy id 15 is not found"}]}
 ```
 
 ## Prerequisites
