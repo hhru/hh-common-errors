@@ -4,7 +4,7 @@
     <parent>
         <groupId>ru.hh.public-pom</groupId>
         <artifactId>public-pom</artifactId>
-        <version>1.31</version>
+        <version>1.54.2-SNAPSHOT</version>
     </parent>
 
     <groupId>ru.hh.errors</groupId>
@@ -16,9 +16,14 @@
 
     <dependencies>
         <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>jsr311-api</artifactId>
-            <version>1.1.1</version>
+            <groupId>jakarta.ws.rs</groupId>
+            <artifactId>jakarta.ws.rs-api</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>

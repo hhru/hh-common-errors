@@ -1,9 +1,9 @@
 package ru.hh.errors.common;
 
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
 import static java.util.Objects.requireNonNull;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "error")
 public class Error {

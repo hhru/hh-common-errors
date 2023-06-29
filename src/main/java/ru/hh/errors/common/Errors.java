@@ -1,10 +1,10 @@
 package ru.hh.errors.common;
 
+import jakarta.ws.rs.core.Response.Status;
+import jakarta.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 import java.util.Objects;
-import javax.ws.rs.core.Response.Status;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Container consisting of one or multiple {@link Error} objects.
