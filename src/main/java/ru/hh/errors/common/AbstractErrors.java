@@ -1,7 +1,6 @@
 package ru.hh.errors.common;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -12,7 +11,7 @@ import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Container consisting of one or multiple {@link Error} objects.
- *
+ * <p/>
  * Can be serialized to suitable format by converter that accepts JAXB annotations (i.e. Jackson for JSON).
  */
 @XmlTransient
@@ -20,43 +19,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class AbstractErrors<T extends Error> {
 
   protected int code;
-  protected List<T> errors;
 
   // default constructor for deserialization
   public AbstractErrors() {
-  }
-
-  /**
-   * Construct container with single error.
-   *
-   * @param statusCode
-   *          response HTTP status code
-   * @param key
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   * @param location
-   *          location of the error, can be null
-   */
-  public AbstractErrors(int statusCode, Object key, String description, String location) {
-    this(statusCode);
-    add(key, description, location);
-  }
-
-  /**
-   * Construct container with single error.
-   *
-   * @param statusCode
-   *          response HTTP status code
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   * @param location
-   *          location of the error, can be null
-   */
-  public AbstractErrors(Status statusCode, Object errorKey, String description, String location) {
-    this(statusCode.getStatusCode(), errorKey, description, location);
   }
 
   /**
@@ -88,56 +53,10 @@ public abstract class AbstractErrors<T extends Error> {
     this.code = code;
   }
 
-  public List<T> getErrors() {
-    return errors;
-  }
-
-  public void setErrors(List<T> errors) {
-    this.errors = errors;
-  }
-
-  protected abstract T createError(Object errorKey, String description, String location);
-
-  private List<T> errors() {
-    if (this.errors == null) {
-      this.errors = new ArrayList<>();
-    }
-    return errors;
-  }
-
-  /**
-   * Add error to container.
-   *
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   * @param location
-   *          location of the error, can be null
-   */
-  public AbstractErrors<T> add(Object errorKey, String description, String location) {
-    return add(createError(errorKey, description, location));
-  }
-
-  /**
-   * Add error to container.
-   *
-   * @param errorKey
-   *          key will be converted to string by {@link Object#toString()} method
-   * @param description
-   *          text description of error for debug purposes, can be null
-   */
-  public AbstractErrors<T> add(Object errorKey, String description) {
-    return add(errorKey, description, null);
-  }
-
-  public AbstractErrors<T> add(T error) {
-    errors().add(error);
-    return this;
-  }
+  public abstract Collection<T> getErrors();
 
   public boolean hasErrors() {
-    return errors != null && !errors.isEmpty();
+    return getErrors() != null && !getErrors().isEmpty();
   }
 
   /**

@@ -1,5 +1,6 @@
 package ru.hh.errors.common;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import javax.ws.rs.core.Response.Status;
@@ -8,36 +9,98 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * Container consisting of one or multiple {@link Error} objects.
- *
+ * <p/>
  * Can be serialized to suitable format by converter that accepts JAXB annotations (i.e. Jackson for JSON).
  */
 @XmlRootElement(name = "errors")
 public class Errors extends AbstractErrors<Error> {
+  protected List<Error> errors = new ArrayList<>();
 
+  /**
+   * @deprecated Do not use this constructor directly. It is used by serialization frameworks
+   */
+  @Deprecated
   public Errors() {
     super();
   }
 
-  public Errors(int statusCode, Object key, String description, String location) {
-    super(statusCode, key, description, location);
+  /**
+   * Construct container with single error.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   * @param location
+   *          location of the error, can be null
+   */
+  public Errors(int statusCode, Object errorKey, String description, String location) {
+    super(statusCode);
+    add(errorKey, description, location);
   }
 
-  public Errors(int statusCode, Object key, String description) {
-    super(statusCode, key, description, null);
+  /**
+   * Construct container with single error.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   */
+  public Errors(int statusCode, Object errorKey, String description) {
+    this(statusCode, errorKey, description, null);
   }
 
+  /**
+   * Construct empty container.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   */
   public Errors(int statusCode) {
     super(statusCode);
   }
 
+  /**
+   * Construct container with single error.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   * @param location
+   *          location of the error, can be null
+   */
   public Errors(Status statusCode, Object errorKey, String description, String location) {
-    super(statusCode, errorKey, description, location);
+    this(statusCode.getStatusCode(), errorKey, description, location);
   }
 
+  /**
+   * Construct container with single error.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   */
   public Errors(Status statusCode, Object errorKey, String description) {
-    super(statusCode, errorKey, description, null);
+    this(statusCode.getStatusCode(), errorKey, description, null);
   }
 
+  /**
+   * Construct empty container.
+   *
+   * @param statusCode
+   *          response HTTP status code
+   */
   public Errors(Status statusCode) {
     super(statusCode);
   }
@@ -47,28 +110,28 @@ public class Errors extends AbstractErrors<Error> {
   @Override
   @XmlElement(name = "error")
   public List<Error> getErrors() {
-    return super.getErrors();
+    return errors;
   }
 
-  @Override
   public void setErrors(List<Error> errors) {
-    super.setErrors(errors);
+    this.errors = errors;
   }
 
+  /**
+   * @deprecated Do not use this method: it is required only to serialize/deserialize 'errors' key
+   */
   @XmlElement(name = "errors")
-  @Deprecated // do not use this method: it is required only to serialize/deserialize 'errors' key
+  @Deprecated
   public List<Error> getError() {
-    return super.getErrors();
+    return getErrors();
   }
 
-  @Deprecated // do not use this method: it is required only to serialize/deserialize 'errors' key
+  /**
+   * @deprecated Do not use this method: it is required only to serialize/deserialize 'errors' key
+   */
+  @Deprecated
   public void setError(List<Error> errors) {
-    super.setErrors(errors);
-  }
-
-  @Override
-  protected Error createError(Object errorKey, String description, String location) {
-    return new Error(errorKey, description, location);
+    setErrors(errors);
   }
 
   @Override
@@ -98,5 +161,39 @@ public class Errors extends AbstractErrors<Error> {
         "code=" + code +
         ", errors=" + errors +
         '}';
+  }
+
+  /**
+   * Add error to container.
+   */
+  public Errors add(Error error) {
+    this.errors.add(error);
+    return this;
+  }
+
+  /**
+   * Add error to container.
+   *
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   * @param location
+   *          location of the error, can be null
+   */
+  public Errors add(Object errorKey, String description, String location) {
+    return add(new Error(errorKey, description, location));
+  }
+
+  /**
+   * Add error to container.
+   *
+   * @param errorKey
+   *          key will be converted to string by {@link Object#toString()} method
+   * @param description
+   *          text description of error for debug purposes, can be null
+   */
+  public Errors add(Object errorKey, String description) {
+    return add(errorKey, description, null);
   }
 }
